@@ -6,6 +6,7 @@ import userRoutes from './routes/user.route.js'
 import authRoute from './routes/auth.route.js'
 import adminRoute from './routes/admin.route.js'
 import path  from 'path';
+import adminAuthRoute from './routes/admin.auth.route.js'
 dotenv.config();
 const app = express()
 const __dirname = path.resolve()
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use('/api/user',userRoutes)
 app.use('/api/auth',authRoute)
 app.use('/api/admin',adminRoute)
+app.use('/api/auth/admin',adminAuthRoute)
 app.get('*',(req,res)=>{
   res.sendFile(path.join(__dirname,'client','dist','index.html'))
 })
