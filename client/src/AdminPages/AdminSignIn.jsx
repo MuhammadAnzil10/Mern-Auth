@@ -1,27 +1,28 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,redirect } from "react-router-dom";
 import {
   signInStart,
   signInFailure,
   signInSuccess,
-} from "../redux/user/userSlice";
+} from "../redux/admin/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Users from "./Users";
 
 const AdminSignIn = () => {
   const [formData, setFormData] = useState({});
-  const { loading, error } = useSelector((state) => state.user);
+  const {adminStatus, loading, error } = useSelector((state) => state.admin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.id]: event.target.value });
   };
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const response = await fetch("api/auth/signin", {
+      const response = await fetch("/api/auth/admin/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,16 +30,23 @@ const AdminSignIn = () => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
+    
       if (data.success === false) {
         dispatch(signInFailure(data));
         return;
       }
       dispatch(signInSuccess(data));
-      navigate("/");
+      navigate("/admin/users")
+   
     } catch (error) {
       dispatch(signInFailure(error));
     }
   };
+
+  if(adminStatus){
+    return navigate('/admin/users')
+  }
+
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -67,13 +75,6 @@ const AdminSignIn = () => {
           {loading ? "Loading..." : "Sign In"}
         </button>
       </form>
-      <div className="flex gap-2 mt-5">
-        <p>Dont have an account?</p>
-        <Link to="/sign-up">
-          {" "}
-          <span className="text-blue-500">Sign Up</span>
-        </Link>
-      </div>
       <p className="text-red-700 mt-5">
         { error ? error.message || "Somthing went wrong!" : ""}
       </p>

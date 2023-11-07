@@ -25,10 +25,15 @@ const adminSlice=createSlice({
            
       state.loading = false,
       state.error = action.payload
-    }
+    },
+    signOut:(state)=>{
+      state.adminStatus = null,
+      state.loading=false;
+      state.error = false;
+      }
   }
 })
 
-export const {signInFailure,signInStart,signInSuccess} = adminSlice.actions;
+export const {signInFailure,signInStart,signInSuccess,signOut} = adminSlice.actions;
 
 export default adminSlice.reducer;

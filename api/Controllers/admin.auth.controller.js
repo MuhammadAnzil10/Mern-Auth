@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 
 export const signIn = async (req, res, next) => {
   try {
+console.log('admin auth');
     const { email, password } = req.body;
 
     const adminData = await Admin.findOne({ email });
@@ -33,3 +34,11 @@ export const signIn = async (req, res, next) => {
     next(error)
   }
 };
+
+
+
+export const signOut =async (req,res,next)=>{
+
+  return res.clearCookie('admin_access_token').status(200).json('Signout success!');
+}
+

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes , useLocation} from "react-router-dom";
+import { BrowserRouter, Route, Routes , useLocation,redirect} from "react-router-dom";
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import SignUp from "./pages/SignUp";
@@ -10,14 +10,15 @@ import PrivateRoute from "./Components/PrivateRoute";
 import Dashboard from "./AdminPages/Dashboard";
 import AdminHeader from "./Components/AdminHeader";
 import Users from "./AdminPages/Users";
+import AdminPrivateRoute from "./AdminPages/AdminPrivateRoute";
+import AdminSignIn from "./AdminPages/AdminSignIn";
 
 const App = () => {
    const location = useLocation()
    const isAdminSection =  location.pathname.startsWith('/admin')
-console.log(isAdminSection);
   return (
     <>
-      {isAdminSection === false && <Header />}
+      {isAdminSection  ? <AdminHeader /> : <Header /> }
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -26,15 +27,21 @@ console.log(isAdminSection);
         <Route element={<PrivateRoute/>} >
            <Route path="/profile" element={<Profile />} />
         </Route>
-        <Route path="/admin"  element={<AdminHeader />} >
-          <Route path="/admin/users"   element={<Users />} />
-          <Route path="/admin/admin-sign-in"  element={<Dashboard />} />
-          <Route path="/admin/admin-sign-out"  element={<Dashboard />} />
+      
+        <Route path="/admin"  element={<AdminSignIn />} />
+        <Route element={<AdminPrivateRoute />} >
+             <Route path="/admin/users"   element={<Users />} />
         </Route>
-
+        <Route path="/admin/dashboard"  element={<Dashboard />} />
       </Routes>
     
-          
+           {/* <Route path="/admin"  element={<AdminHeader />} >
+          <Route element={<AdminPrivateRoute />} >
+             <Route path="/admin/users"   element={<Users />} />
+          </Route>
+          <Route path="/admin/signin"  element={<AdminSignIn />} />
+          <Route path="/admin/signout"  element={<Dashboard />} />
+        </Route> */}
     
       </>
   );
