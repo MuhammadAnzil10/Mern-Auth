@@ -1,10 +1,11 @@
 import express from 'express'
 const router = express.Router()
-import {test,updateUser,deleteUser} from '../Controllers/user.controller.js'
-import {verifyToken} from '../utils/verifyUser.js'
+import {updateUser} from '../Controllers/admin.controller.js'
+import {verifyToken} from '../utils/verifyAdmin.js'
 import { getAllUsers } from '../Controllers/admin.controller.js'
 
 router.get('/users',getAllUsers)
+router.post('/update/:id',verifyToken,updateUser)
 
 
 

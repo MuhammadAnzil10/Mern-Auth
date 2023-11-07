@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 export const signIn = async (req, res, next) => {
   try {
-console.log('admin auth');
+
     const { email, password } = req.body;
 
     const adminData = await Admin.findOne({ email });

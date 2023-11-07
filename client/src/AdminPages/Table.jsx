@@ -37,7 +37,15 @@ export default function Table({usersData}) {
     // Update the user data with the editedUser
     // You can use API calls or update your 
     
-    console.log('edited userrr',editedUser);
+    const response =await fetch('/api/admin/update/'+editedUser._id,{
+      method:"POST",
+      headers:{
+        'Content-Type':"application/json"
+      },
+      body:JSON.stringify(editedUser)
+    })
+    const userData = await response.json()
+    console.log(userData);
     setIsEditModalOpen(false);
   };
 
