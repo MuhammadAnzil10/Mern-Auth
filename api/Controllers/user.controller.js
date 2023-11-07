@@ -37,8 +37,8 @@ export const updateUser = async (req,res,next)=>{
 }
 
 export const deleteUser=async(req,res,next)=>{
-console.log('jai');
-console.log(req.params.id,req.user.id);
+
+
   if(req.params.id !== req.user.id){
     return next(errHandler(401,'You can only delete your account!'))
   }

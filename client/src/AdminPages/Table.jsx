@@ -1,10 +1,14 @@
-import { set } from "mongoose";
-import React,{useState,useEffect} from "react";
 
+import React,{useState,useEffect} from "react";
+import UserEditModal from "./UserEditModal";
 
 export default function Table({usersData}) {
   const [search,setSearch] = useState('')
   const [filterUsers , setFilterUsers] = useState([])
+  const [users, setUsers] = useState([/* Your user data array */]);
+  const [editingUser, setEditingUser] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
 
   useEffect(()=>{
     setFilterUsers(usersData)
@@ -22,6 +26,25 @@ export default function Table({usersData}) {
   
     setFilterUsers(filtered)
   }
+
+  const handleEditClick =(user)=>{
+    setEditingUser(user);
+    setIsEditModalOpen(true);
+  }
+
+  
+  const handleSaveUser =async (editedUser) => {
+    // Update the user data with the editedUser
+    // You can use API calls or update your 
+    
+    console.log('edited userrr',editedUser);
+    setIsEditModalOpen(false);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingUser(null);
+  };
  
   return (
     
@@ -64,7 +87,13 @@ export default function Table({usersData}) {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-
+        {isEditModalOpen && (
+        <UserEditModal
+          user={editingUser}
+          onSave={handleSaveUser}
+          onClose={handleCloseEditModal}
+        />
+      )}
           {
             filterUsers.map((user , index)=>{
 
@@ -78,11 +107,12 @@ export default function Table({usersData}) {
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <button className="bg-green-500 rounded-md p-1 mx-1">Edit</button>
+                <button className="bg-green-500 rounded-md p-1 mx-1" onClick={()=>handleEditClick(user)}>Edit</button>
                <button className="bg-red-600 rounded-md p-1">Delete</button></td>
             </tr>)
             })
           }
+         
          
         </tbody>
       </table>
